@@ -13,9 +13,6 @@ lista=[12,3,21,6,4,15]
 listb=[]
 print lista
 ##a = raw_input('Enter one integer')
-
-
-
 if 6 in lista:
     index = lista.index(6)
     print index
