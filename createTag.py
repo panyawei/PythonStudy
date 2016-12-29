@@ -26,14 +26,12 @@
 ##import xml.etree.ElementTree as EF
 ##a = EF.Element('newstart1')
 ##dom = EF.parse('pred.xml')
-##
-##
+
 ##b = EF.SubElement(a,'name')
 ##b.attrib = {'name':'name attribute'}
 ##b.text = 'wangwu'
 ##c = EF.SubElement(a,'age')
 ##c.text = '25'
-##
 ##f = file('E:\PyScriptcx\pred.xml','a')
 ##tree = EF.ElementTree(a)
 ##tree.write(f)
