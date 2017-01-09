@@ -1,0 +1,1 @@
+action.setIcon(QIcon(":/{0}.png".format(icon)))
