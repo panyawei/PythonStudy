@@ -9,7 +9,7 @@
 # Copyright:   (c) 12SigmaTech 2017
 # Licence:     <your licence>
 #-------------------------------------------------------------------------------
-import xlwt #exampleB
+import xlwt
 from xlwt import *
 ##class xlwtExcel:
 def ExcelXlwt(filename,**args):
@@ -154,14 +154,15 @@ def ExcelXlwt(filename,**args):
     while i<len(row_bloodvessel_two):
         sheet1.write(j,i+6,row_bloodvessel_two[i],style_other)
         i+=1
-    sheet1.write_merge(18,18,8,11,'其它:',style_other_other)
-    row_bloodvessel_three=['局限','弥漫']
+    sheet1.write(18,8,'其它:',style_other_other)
+    sheet1.write_merge(18,18,9,11,'',style_other_other)
+    row_bloodvessel_three=['局限','弥漫','少量','中量','大量','']
     i,j=0,19
     while i<len(row_bloodvessel_three):
         sheet1.write(j,i+6,row_bloodvessel_three[i],style_other)
         i+=1
-    sheet1.write_merge(19,19,8,11,'少量           中量          大量',style_other)
-    row_bloodvessel_four=['左心室','右心室','左心房','右心房','普大','其它']
+##    sheet1.write_merge(19,19,8,11,'少量           中量          大量',style_other)
+    row_bloodvessel_four=['左心室','右心室','左心房','右心房','普大','其它:']
     i,j=0,20
     while i<len(row_bloodvessel_four):
         sheet1.write(j,i+6,row_bloodvessel_four[i],style_other)
@@ -171,13 +172,15 @@ def ExcelXlwt(filename,**args):
     while i<len(row_bloodvessel_five):
         sheet1.write(j,i+6,row_bloodvessel_five[i],style_other)
         i+=1
-    sheet1.write_merge(21,21,8,11,'其它:',style_other_other)
-    row_bloodvessel_six=['左PA','右PA']
+    sheet1.write(21,8,'其它:',style_other_other)
+    sheet1.write_merge(21,21,9,11,'',style_other_other)
+    row_bloodvessel_six=['右PA','左PA']
     i,j=0,22
     while i<len(row_bloodvessel_six):
         sheet1.write(j,i+6,row_bloodvessel_six[i],style_other)
         i+=1
-    sheet1.write_merge(22,22,8,11,'描述:',style_other_other)
+    sheet1.write(22,8,'描述:',style_other_other)
+    sheet1.write_merge(22,22,9,11,'',style_other_other)
 
     # lymph gland
     sheet1.write_merge(23,25,0,2,'纵隔/肺门/其他部位淋巴结',style_top)
@@ -193,8 +196,8 @@ def ExcelXlwt(filename,**args):
 
     j=23
     for j in range(23,26):
-        sheet1.write_merge(j,j,6,11,'部位:',style_other_other)
-
+        sheet1.write(j,6,'部位:',style_other)
+        sheet1.write_merge(j,j,7,11,'',style_other)
 
     # mediastinumLesion
     sheet1.write_merge(26,29,0,2,'纵隔病变',style_top)
@@ -204,15 +207,19 @@ def ExcelXlwt(filename,**args):
         sheet1.write_merge(j,j,3,4,column_zgbb[i],style_other)
         i+=1
         j+=1
-    sheet1.write_merge(29,29,3,11,'        附加描述:',style_other_other)
-    for j in range(26,30):
+    sheet1.write_merge(29,29,3,4,'附加描述:',style_other)
+    sheet1.write_merge(29,29,5,11,'',style_other_other)
+    for j in range(26,29):
         sheet1.write(j,5,'无/有',style_other)
 
-    sheet1.write_merge(26,26,6,11,'部位及描述:',style_other_other)
-    sheet1.write(27,6,'上段',style_other)
-    sheet1.write(27,7,'中段',style_other)
-    sheet1.write(27,8,'下端',style_other)
-    sheet1.write_merge(27,27,9,11,'补充:',style_other_other)
+    sheet1.write_merge(26,26,6,7,'部位及描述:',style_other)
+    sheet1.write_merge(26,26,8,11,'',style_other_other)
+    row_zgbb_two=['上段','中段','下端','补充:']
+    i,j=0,27
+    while i<len(row_zgbb_two):
+        sheet1.write(j,i+6,row_zgbb_two[i],style_other)
+        i+=1
+    sheet1.write_merge(27,27,10,11,'',style_other_other)
     row_zgbb_three=['左叶','右叶','弥漫','实性','蘘性','其它:']
     i,j=0,28
     while i<len(row_zgbb_three):
@@ -223,7 +230,8 @@ def ExcelXlwt(filename,**args):
     sheet1.write_merge(30,32,0,2,'胸壁病变',style_top)
     sheet1.write_merge(30,30,3,4,'胸壁软组织',style_other)
     sheet1.write_merge(31,31,3,4,'肋骨异常',style_other)
-    sheet1.write_merge(32,32,3,11,'        附加描述:',style_other_other)
+    sheet1.write_merge(32,32,3,4,'附加描述:',style_other)
+    sheet1.write_merge(32,32,5,11,'',style_other_other)
 
     for j in range(30,32):
         sheet1.write(j,5,'无/有',style_other)
@@ -233,13 +241,15 @@ def ExcelXlwt(filename,**args):
         while i<len(row_xbbb):
             sheet1.write(j,i+6,row_xbbb[i],style_other)
             i+=1
-        sheet1.write_merge(j,j,8,11,'描述:',style_other_other)
+        sheet1.write(j,8,'描述:',style_other)
+        sheet1.write_merge(j,j,9,11,'',style_other_other)
         i=0
 
     # Vertebral anomalies
     sheet1.write_merge(33,33,0,2,'椎体异常',style_top)
     sheet1.write_merge(33,33,3,4,'增生退变',style_other)
-    sheet1.write_merge(33,33,5,11,'    其它:',style_other_other)
+    sheet1.write(33,5,'其它:',style_other)
+    sheet1.write_merge(33,33,6,11,'',style_other_other)
 
     # Breast lesions
     sheet1.write_merge(34,34,0,2,'乳腺病变',style_top)
@@ -247,7 +257,8 @@ def ExcelXlwt(filename,**args):
     i,j=0,34
     for j in range(34,35):
         sheet1.write_merge(34,34,3,4,'',style_other)
-        sheet1.write_merge(34,34,10,11,'描述:',style_other_other)
+        sheet1.write(34,10,'描述:',style_other)
+        sheet1.write(34,11,'',style_other)
         while i<len(row_rxbb):
             sheet1.write(j,i+5,row_rxbb[i],style_other)
             i+=1
@@ -265,7 +276,7 @@ def ExcelXlwt(filename,**args):
         sheet1.write(j,5,'无/有',style_other)
     row_sfb_one=['占位','钙化']
     i,j=0,35
-    sheet1.write_merge(j,j,6,9,'    蘘肿:    无    有    单发   多发',style_other_other)
+    sheet1.write_merge(j,j,6,9,'蘘肿:    无       有      单发     多发',style_other)
     sheet1.write(j,i+10,row_sfb_one[0],style_other)
     sheet1.write(j,i+11,row_sfb_one[1],style_other)
 
@@ -281,13 +292,15 @@ def ExcelXlwt(filename,**args):
         i+=1
     row_sfb_four=['萎缩','钙化','占位']
     i,j=0,38
-    sheet1.write_merge(j,j,9,11,'描述:',style_other_other)
+    sheet1.write(j,9,'描述:',style_other)
+    sheet1.write_merge(j,j,10,11,'',style_other_other)
     while i<len(row_sfb_four):
         sheet1.write(j,i+6,row_sfb_four[i],style_other)
         i+=1
     row_sfb_five=['肿大','钙化']
     i,j=0,39
-    sheet1.write_merge(j,j,8,11,'    其它:',style_other_other)
+    sheet1.write(j,8,'其它:',style_other)
+    sheet1.write_merge(j,j,9,11,'',style_other_other)
     while i<len(row_sfb_five):
         sheet1.write(j,i+6,row_sfb_five[i],style_other)
         i+=1
@@ -303,7 +316,8 @@ def ExcelXlwt(filename,**args):
     sheet1.write(41,5,'炎症',style_other)
     sheet1.write_merge(41,41,6,8,'结核:    无    有    活动    非活动',style_other)
     sheet1.write(41,9,'肿瘤',style_other)
-    sheet1.write_merge(41,41,9,11,'其它:',style_other_other)
+    sheet1.write(41,10,'其它:',style_other)
+    sheet1.write(41,11,'',style_other_other)
 
     # follow-up
     sheet1.write_merge(42,43,0,2,'随诊建议',style_top)
@@ -314,21 +328,24 @@ def ExcelXlwt(filename,**args):
     while i<len(row_sz_one):
         sheet1.write(j,i+5,row_sz_one[i],style_other)
         i+=1
-    sheet1.write_merge(42,42,9,11,'其它建议:',style_other_other)
-    row_sz_two=['','','','','','','']
-    i,j=0,43
-    while i<len(row_sz_two):
-        sheet1.write(j,i+5,row_sz_two[i],style_other)
-        i+=1
+    sheet1.write(42,9,'其它建议:',style_other)
+    sheet1.write_merge(42,42,10,11,'',style_other_other)
+    sheet1.write_merge(43,43,5,11,'',style_other_other)
+##    row_sz_two=['','','','','','','']
+##    i,j=0,43
+##    while i<len(row_sz_two):
+##        sheet1.write(j,i+5,row_sz_two[i],style_other)
+##        i+=1
 
     #  write into Excel
     dic=args
     print 'dic=',dic
     table1Items=('FSZ_GGO','SYZ_XPJJ','XWBH_JG','ZQGKZ','FJZXWH','FBZ','FQZ','FJMS','QG_ZQG')
     for key,value in dic['arg'][0].items():
+        rowIndex1=table1Items.index(key)+5
         if key in table1Items:
             if len(value)!=0:
-                rowIndex1=table1Items.index(key)+5
+
                 sheet1.write(rowIndex1,5,'有',style_other)
                 for val in value:
                     if(len(val)==2):
@@ -350,7 +367,8 @@ def ExcelXlwt(filename,**args):
                         if(rowIndex1==13):
                             sheet1.write(rowIndex1,10,u'部位: '+val,style_other)
             else:
-                sheet1.write(table1Items.index(key)+5,5,'无',style_other)
+                if (rowIndex1!=12):
+                    sheet1.write(table1Items.index(key)+5,5,'无',style_other)
 
     table2Items=('XQJY','XMZH','XMB')
     for key,value in dic['arg'][1].items():
@@ -359,7 +377,6 @@ def ExcelXlwt(filename,**args):
                 rowIndex2=table2Items.index(key)
                 for val in value:
                     if val[1]>=1:
-##                        print 'key=,val[1]=,table2Items.index(key)=',table2Items.index(key),key,val[1]
                         sheet1.write(table2Items.index(key)+14,5,'有',style_other)
                     else:
                         sheet1.write(table2Items.index(key)+14,5,'无',style_other)
@@ -374,13 +391,208 @@ def ExcelXlwt(filename,**args):
             else:
                 sheet1.write(table2Items.index(key)+14,5,'无',style_other)
 
+    table3Items=('GZDMGH','XBZH','XBJY','XYZD','ZDMBB','FDMYC')
+    for key,value in dic['arg'][2].items():
+        if key in table3Items:
+            if len(value)!=0:
+                rowIndex3=table3Items.index(key)
+                for val in value:
+                    if val[1]>=1:
+                        sheet1.write(table3Items.index(key)+17,5,'有',style_other)
+                    else:
+                        sheet1.write(table3Items.index(key)+17,5,'无',style_other)
+                    if len(val)==2:
+                        row_bloodvessel=row_bloodvessel_one,row_bloodvessel_two,row_bloodvessel_three,row_bloodvessel_four,row_bloodvessel_five,row_bloodvessel_six
+                        sheet1.write(rowIndex3+17,val[1]+4,row_bloodvessel[rowIndex3][val[1]-2]+' ✔',style_other)
+                    else:
+                        if rowIndex3==1 or rowIndex3==4 or rowIndex3==5:
+                            sheet1.write(rowIndex3+17,9,val,style_other)
+                        if rowIndex3==3:
+                            sheet1.write(rowIndex3+17,11,u'其它:'+val,style_other_other)
+##                        if rowIndex3==4:
+##                            sheet1.write(rowIndex3+17,9,val,style_other)
+##                        if rowIndex3==5:
+##                            sheet1.write(rowIndex3+17,9,val,style_other)
+            else:
+                sheet1.write(table3Items.index(key)+17,5,'无',style_other)
 
+    table4Items=('LBJD','LBJX','LBJGH')
+    for key,value in dic['arg'][3].items():
+        if key in table4Items:
+            if (len(value)!=0):
+                rowIndex4=table4Items.index(key)+23
+                for val in value:
+                    if val[1]==1:
+                        sheet1.write(rowIndex4,5,'有',style_other)
+                    if val[1]==0:
+                        sheet1.write(rowIndex4,5,'无',style_other)
+                    if val[1]>1:
+                        sheet1.write(rowIndex4,5,'有',style_other)
+                        sheet1.write(rowIndex4,7,val,style_other)
+            else:
+                sheet1.write(table4Items.index(key)+23,5,'无',style_other)
 
+    table5Items=('ZGZW','SDBB','JZXBB','FJMS')
+    for key,value in dic['arg'][4].items():
+        if key in table5Items:
+            rowIndex5=table5Items.index(key)
+            if len(value)!=0:
+                for val in value:
+                    if val[1]>=1:
+                        sheet1.write(table5Items.index(key)+26,5,'有',style_other)
+                    else:
+                        sheet1.write(table5Items.index(key)+26,5,'无',style_other)
+                    if len(val)==2:
+                        if key=='SDBB':
+                            sheet1.write(rowIndex5+26,val[1]+4,row_zgbb_two[val[1]-2]+' ✔',style_other)
+                        if key=='JZXBB':
+                            sheet1.write(rowIndex5+26,val[1]+4,row_zgbb_three[val[1]-2]+' ✔',style_other)
+                    else:
+                        if rowIndex5==0:sheet1.write(rowIndex5+26,8,val,style_other)
+                        if rowIndex5==3:sheet1.write(rowIndex5+26,5,val,style_other)
+                        if rowIndex5==1:sheet1.write(rowIndex5+26,10,val,style_other)
+                        if rowIndex5==2:sheet1.write(rowIndex5+26,11,u'其它:'+val,style_other_other)
+            else:
+                if rowIndex5!=3:
+                    sheet1.write(table5Items.index(key)+26,5,'无',style_other)
 
+    table6Items=('XMRZZ','LGYC','FJMS')
+    for key,value in dic['arg'][5].items():
+        if key in table6Items:
+            rowIndex6=table6Items.index(key)
+            if len(value)!=0:
+                for val in value:
+                    if val[1]>=1:
+                        sheet1.write(table6Items.index(key)+30,5,'有',style_other)
+                    else:
+                        sheet1.write(table6Items.index(key)+30,5,'无',style_other)
+                    if len(val)==2:
+                        if key=='XMRZZ' or key=='LGYC':
+                            sheet1.write(rowIndex6+30,val[1]+4,row_xbbb[val[1]-2]+' ✔',style_other)
+                    else:
+                        if rowIndex6==0:sheet1.write(rowIndex6+30,9,val,style_other)
+                        if rowIndex6==1:sheet1.write(rowIndex6+30,9,val,style_other)
+                        if rowIndex6==2:sheet1.write(rowIndex6+30,5,val,style_other)
+            else:
+                if rowIndex6!=2:
+                    sheet1.write(table6Items.index(key)+30,5,'无',style_other)
+
+    table7Items=('ZSTB',)
+    for key,value in dic['arg'][6].items():
+        if key in table7Items:
+            rowIndex7=table7Items.index(key)
+            if len(value)!=0:
+                for val in value:
+                    if len(val)==2:
+                        sheet1.write(rowIndex7+33,3,'增生退变 ✔',style_other)
+                    else:
+                        sheet1.write(rowIndex7+33,6,val,style_other)
+            else:
+                sheet1.write(table7Items.index(key)+33,5,'',style_other)
+
+    table8Items=('RXBB',)
+    for key,value in dic['arg'][7].items():
+        if key in table8Items:
+            rowIndex8=table8Items.index(key)
+            if len(value)!=0:
+                for val in value:
+                    if len(val)==2 and val[1]<5:
+                        sheet1.write(rowIndex8+34,val[1]+5,row_rxbb[val[1]]+'✔',style_other)
+                    else:
+                        sheet1.write(rowIndex8+34,11,val,style_other)
+
+    table9Items=('GZBB','SSXBB','SZBB','YXBB','FQFM_HLBJ')
+    for key,value in dic['arg'][8].items():
+        if key in table9Items:
+            rowIndex9=table9Items.index(key)
+            print 'rowIndex9=,key=',rowIndex9,key
+            if len(value)!=0:
+                for val in value:
+                    if val[1]>=1:
+                        sheet1.write(rowIndex9+35,5,'有',style_other)
+                        if rowIndex9==0 and val[1]==3:
+                            sheet1.write(rowIndex9+35,5,'无',style_other)
+                    else:
+                        sheet1.write(rowIndex9+35,5,'无',style_other)
+                    if len(val)==2:
+                        if key=='GZBB':
+                            if val[1]==3:
+                                sheet1.write(rowIndex9+35,6,'蘘肿:    无 ✔      有      单发     多发',style_other)
+                            if val[1]==4:
+                                sheet1.write(rowIndex9+35,6,'蘘肿:    无       有 ✔     单发     多发',style_other)
+                            if val[1]==5:
+                                sheet1.write(rowIndex9+35,6,'蘘肿:    无       有 ✔     单发 ✔    多发',style_other)
+                            if val[1]==6:
+                                sheet1.write(rowIndex9+35,6,'蘘肿:    无       有 ✔     单发     多发✔',style_other)
+                            if val[1]==7 or val[1]==8:
+                                sheet1.write(rowIndex9+35,val[1]+3,row_sfb_one[val[1]-7]+'✔',style_other)
+                        else:
+                            row_sfb=row_sfb_one,row_sfb_two,row_sfb_three,row_sfb_four,row_sfb_five
+##                            if key=='SSXBB' or key=='SZBB' or key=='YXBB' or key=='FQFM_HLBJ':
+                            sheet1.write(rowIndex9+35,val[1]+4,row_sfb[rowIndex9][val[1]-2]+'✔',style_other)
+                    else:
+                        print 'ssssss'
+                        if rowIndex9==1 :sheet1.write(rowIndex9+35,11,u'其它:'+val,style_other)
+                        if rowIndex9==2 :sheet1.write(rowIndex9+35,11,u'其它:'+val,style_other)
+                        if rowIndex9==3 :sheet1.write(rowIndex9+35,10,u'描述:'+val,style_other)
+                        if rowIndex9==4 :sheet1.write(rowIndex9+35,9,u'其它:'+val,style_other)
+            else:
+                sheet1.write(rowIndex9+35,5,'无',style_other)
+
+    table10Items=('QTBX',)
+    for key,value in dic['arg'][9].items():
+        for val in value:
+            if key=='QTBX':
+                sheet1.write(40,3,val,style_other)
+
+    table11Items=('NIZHEN',)
+    for key,value in dic['arg'][10].items():
+        if key in table11Items:
+            rowIndex11=table11Items.index(key)
+            if len(value)!=0:
+                for val in value:
+                    if len(val)==2:
+                        if val[1]==0:
+                            sheet1.write(rowIndex11+41,val[1]+3,'未见异常 ✔',style_other)
+                        if val[1]==1:
+                            sheet1.write(rowIndex11+41,val[1]+4,'炎症 ✔',style_other)
+                        if val[1]==2:
+                            sheet1.write(rowIndex11+41,val[1]+4,'结核:无  有 ✔ 活动  非活动',style_other)
+                        if val[1]==3:
+                            sheet1.write(rowIndex11+41,val[1]+3,'结核:无  有 ✔ 活动 ✔  非活动',style_other)
+                        if val[1]==4:
+                            sheet1.write(rowIndex11+41,val[1]+2,'结核:无  有 ✔ 活动  非活动 ✔',style_other)
+                        if val[1]!=2 and val[1]!=3 and val[1]!=4:
+                            sheet1.write(rowIndex11+41,6,'结核:无✔ 有  活动  非活动',style_other)
+                        if val[1]==5:
+                            sheet1.write(rowIndex11+41,val[1]+4,'肿瘤 ✔',style_other)
+                    else:
+                        sheet1.write(rowIndex11+41,11,val,style_other)
+
+    table12Items=('SZSJ','SZBB')
+    for key,value in dic['arg'][11].items():
+        if key in table12Items:
+            rowIndex12=table12Items.index(key)
+            if len(value)!=0:
+                for val in value:
+                    if len(val)==2 and key=='SZSJ':
+                        sheet1.write(rowIndex12+42,val[1]+5,row_sz_one[val[1]]+'✔',style_other)
+                    else:
+                        if rowIndex12==0:sheet1.write(rowIndex12+42,10,val,style_other)
+                        if rowIndex12==1:sheet1.write(rowIndex12+42,5,val,style_other)
     w.save(filename)
 ####
-tableDic1= {'FQZ': [(6, 1),(6,0)], 'SYZ_XPJJ': [(1, 2)], 'FSZ_GGO': [(0, 1)], 'ZQGKZ': [(3, 4)], 'FBZ': [(5, 6)], 'FJMS': [u'\u58eb\u5927\u592b\u4f3c\u7684'], 'FJZXWH': [(4, 5)], 'QG_ZQG': [(7, 1), (7, 3), u'\u540a\u6b7b\u6276\u4f24'], 'XWBH_JG': [(2, 3)]}
-tableDic2= {'XMZH': [(1, 1), (1, 3), (1, 5), (1, 7)], 'XMB': [(2, 1), u'\u793a\u8303\u70b9'], 'XQJY': [(0, 2), (0, 4), (0, 6)]}
-tableDic=(tableDic1,tableDic2)
-
-ExcelXlwt('Beijing_Excel03.xls',arg=tableDic)
+##tableDic1= {'FQZ': [(6, 1),(6,0)], 'SYZ_XPJJ': [(1, 2)], 'FSZ_GGO': [(0, 1)], 'ZQGKZ': [(3, 4)], 'FBZ': [(5, 6)], 'FJMS': [u'\u58eb\u5927\u592b\u4f3c\u7684'], 'FJZXWH': [(4, 5)], 'QG_ZQG': [(7, 1), (7, 3), u'\u540a\u6b7b\u6276\u4f24'], 'XWBH_JG': [(2, 3)]}
+##tableDic2= {'XMZH': [(1, 1), (1, 3), (1, 5), (1, 7)], 'XMB': [(2, 1), u'\u53d1\u5c04\u70b9\u53d1\u751f'], 'XQJY': [(0, 2), (0, 4), (0, 6)]}
+##tableDic3= {'XBZH': [(1, 3), u'\u7684\u9644\u5c5e\u516c\u53f8\u7684'], 'GZDMGH': [(0, 2)], 'XBJY': [], 'ZDMBB': [u'\u7b2c\u4e09\u65b9\u5e7f\u544a\u5546\u5730\u65b9'], 'FDMYC': [(5, 2), u'\u7b2c\u4e09\u65b9\u516c\u53f8'], 'XYZD': [(3, 5), u'\u5341\u591a\u4e2a']}
+##tableDic4= {'LBJD': [(0, 1), u'\u8c46\u8150\u5e72d'], 'LBJGH': [(2, 1), u'\u5927\u8303\u7518\u8fea'], 'LBJX': [(1, 1), u'\u5730\u65b9']}
+##tableDic5= {'ZGZW': [u'\u90fd\u7b26\u5408\u4e1c\u65b9'], 'SDBB': [(1, 3), (1, 4), u'\u7684\u53d1\u6325\u66f4\u5927'], 'JZXBB': [(2, 3), (2, 5), u'\u4e1c\u65b9\u5316\u5de5\u7684'], 'FJMS': []}
+##tableDic6= {'XMRZZ': [], 'FJMS': [], 'LGYC': [(1, 2), (1, 3), u'\u70e6\u5f97\u5f88']}
+##tableDic7= {'ZSTB': [(0, 0), u'\u83b7\u5f97\u4e30\u539a']}
+##tableDic8= {'RXBB': [(0, 1), (0, 2), (0, 4), u'\u5c71\u4e1c\u5206\u516c\u53f8']}
+##tableDic9= {'YXBB': [(3, 1), (3, 2), (3, 3), (3, 4), u'\u7684\u8bd7\u6b4c\u98ce\u683c\u58eb\u5927\u592b'], 'FQFM_HLBJ': [(4, 1), (4, 2), (4, 3), u'dfd '], 'GZBB': [(0, 3)], 'SZBB': [], 'SSXBB': [(1, 1), (1, 2), (1, 3), (1, 6), u'\u90fd\u662f\u975e\u5b98\u65b9\u7684']}
+##tableDic10= {'QTBX': [u'\u662f\u6cd5\u5927\u5e08\u5085']}
+##tableDic11= {'NIZHEN': [(0,0),(0, 1), (0, 5), u'\u5e45\u5ea6\u53d8\u5316\u5e45\u5ea6']}
+##tableDic12= {'SZSJ': [(0, 1), (0, 3), u'\u5c81\u7684\u6cd5\u56fd'], 'SZBB': [u'\u6536\u8d39\u7684\u9ad8\u5bcc\u5e05\u7684\u6562\u6b7b\u961f\u98ce\u683c']}
+##tableDic=tableDic1,tableDic2,tableDic3,tableDic4,tableDic5,tableDic6,tableDic7,tableDic8,tableDic9,tableDic10,tableDic11,tableDic12
+##ExcelXlwt('Beijing_Excel03.xls',arg=tableDic)
