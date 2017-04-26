@@ -20,7 +20,7 @@ class Form(QDialog):
         self.browser=QTextBrowser()
         self.lineedit=QLineEdit('Type an excpression and press Enter')
         self.lineedit.selectAll()
-        layout=QVBoxLayout()
+        layout=QHBoxLayout()
         layout.addWidget(self.browser)
         layout.addWidget(self.lineedit)
         self.setLayout(layout)

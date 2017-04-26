@@ -15,6 +15,7 @@ from PyQt4.QtGui import *
 app = QApplication(sys.argv)
 try:
     due = QTime.currentTime()
+    print due
     message = 'Alert'
     if len(sys.argv)<2:
         raise ValueError
@@ -25,7 +26,8 @@ try:
     if len(sys.argv)>2:
         message = ''.join(sys.argv[2:])
 except ValueError:
-    message = "Usage: alert.pyw HH:MM [optional message]"
+##    message = "Usage: alert.pyw HH:MM [optional message]"
+    message = "clock at %s:%s" %()
 
 while QTime.currentTime()<due:
     time.sleep(2)
@@ -33,6 +35,6 @@ label = QLabel("<font color=red size=72><b>{0}</b></font>"
                .format(message))
 label.setWindowFlags(Qt.SplashScreen)
 label.show()
-QTimer.singleShot(60000, app.quit) # 1 minute
+QTimer.singleShot(10000, app.quit) # 1 minute
 app.exec_()
 

@@ -12,9 +12,9 @@ import os,shutil
 import re
 import pypinyin
 
-dir_path=u'D:\Puncture_CT\PuntureSouthwest Hospital_CT'
+dir_path=u'D:\ZSDicoms\PuntureSouthwest Hospital_CT'
 files=[x for x in os.listdir(dir_path)]
-output_file= u'D:\Puncture_CT'
+output_file= u'D:\ZSDicoms\Puncture_nii'
 for ii in files:
     filess = re.split(r'(\W+)',ii)
     name=filess[1]
@@ -40,7 +40,8 @@ for ii in files:
                             namelist=list(a3)
                             b3=namelist[0]
                     nameUpper=(b1+b2+b3).upper()
-                    path=r"D:/Puncture_CT/%s%s/" %(filess[0],nameUpper)
+                    path=r"%s/%s%s/" %(output_file,filess[0],nameUpper)
+##                    path=r"D:\ZSDicoms\Puncture_nii\%s%s" %(filess[0],nameUpper)
                     isExists=os.path.exists(path)
                     if not isExists:
                         os.mkdir(path)
@@ -60,7 +61,8 @@ for ii in files:
                             namelist=list(a2)
                             b2=namelist[0]+namelist[1]
                     nameUpper= (b1+b2).upper()
-                    path=r"D:/Puncture_CT/%s%s/" %(filess[0],nameUpper)
+                    path=r"%s/%s%s/" %(output_file,filess[0],nameUpper)
+##                    path=r"D:\ZSDicoms\Puncture_nii\%s%s" %(filess[0],nameUpper)
                     isExists=os.path.exists(path)
                     if not isExists:
                         os.mkdir(path)
@@ -90,7 +92,8 @@ for ii in files:
                             namelist=list(a4)
                             b4=namelist[0]
                     nameUpper= (b1+b2+b3+b4).upper()
-                    path=r"D:/Puncture_CT/%s%s/" %(filess[0],nameUpper)
+                    path=r"%s/%s%s/" %(output_file,filess[0],nameUpper)
+##                    path=r"D:\ZSDicoms\Puncture_nii\%s%s" %(filess[0],nameUpper)
                     isExists=os.path.exists(path)
                     if not isExists:
                         os.mkdir(path)

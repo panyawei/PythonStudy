@@ -71,8 +71,8 @@ class FindAndReplaceDlg(QDialog,
 
 
     @Slot()
-##    def on_findButton_clicked(self):
-    def on_findLineEdit_returnPressed(self):  #??????????????????????
+    def on_findButton_clicked(self):
+##    def on_findLineEdit_returnPressed(self):
         regex = self.makeRegex()
         match = regex.search(self.__text, self.__index)
         if match is not None:

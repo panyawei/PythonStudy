@@ -13,7 +13,7 @@
 import sys
 from PyQt4 import QtCore, QtGui
 from PyQt4.QtGui import (QApplication, QDialog)
-from ui_table import Ui_Form
+from ui_tabelWindow import Ui_Form
 
 MAC = True
 try:

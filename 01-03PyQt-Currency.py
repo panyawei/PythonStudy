@@ -59,16 +59,20 @@ class Form(QDialog):
         self.toComboBox.addItems(rates)
 
     def updateUi(self):
+        print "a"
         to=unicode(self.toComboBox.currentText())
         from_=unicode(self.fromComboBox.currentText())
-        print self.rates[from_]
+
+##        print self.rates[from_]
 ##        print self.rates[to]
         if to==unicode(''):
             to=unicode('Argentine peso')
         amount=(self.rates[from_]/self.rates[to])*self.fromSpinBox.value()
         self.toLabel.setText("%0.2f" % amount)
 
+
     def getdata(self): # Idea taken from the Python Cookbook
+        print "b"
         self.rates = {}
         try:
             date = "Unknown"

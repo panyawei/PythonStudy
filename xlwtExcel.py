@@ -105,18 +105,22 @@ def ExcelXlwt(filename,**args):
 
     #  胸腔/胸膜异常
     sheet1.write_merge(14,16,0,2,'胸腔/胸膜异常',style_top)
-    columu_chest=['XQJY','XMZH','XMB']
+##    column_chest=['胸膜积液','胸膜增厚','胸膜斑']
+##    column_chest=['XMJY','XMZH','XMB']
+    column_chest=['胸膜积液','胸膜增厚','胸膜斑']
     i,j=0,14
-    while i<len(columu_chest):
-        sheet1.write_merge(j,j,3,4,columu_chest[i],style_other)
+    while i<len(column_chest):
+        sheet1.write_merge(j,j,3,4,column_chest[i],style_other)
         j+=1
         i+=1
-    row_chest_one=['ZC','YC','SC','SL','ZL','DL']
+##    row_chest_one=['ZC','YC','SC','SL','ZL','DL']
+    row_chest_one=[u'右侧',u'左侧',u'双侧',u'少量',u'中量',u'大量']
     i,j=0,14
     while i<len(row_chest_one):
         sheet1.write(j,i+6,row_chest_one[i],style_other)
         i+=1
-    row_chest_two=['ZC','YC','SC','JX','GF','GH']
+##    row_chest_two=['ZC','YC','SC','JX','GF','GH']
+    row_chest_two=[u'右侧',u'左侧',u'双侧',u'局限',u'广泛',u'钙化']
     i,j=0,15
     while i<len(row_chest_two):
         sheet1.write(j,i+6,row_chest_two[i],style_other)
@@ -318,14 +322,24 @@ def ExcelXlwt(filename,**args):
     chestDic=args
     print 'chestDic=',chestDic
     for key,value in chestDic['arg1'].items():
+##        column_chest=['胸膜积液','胸膜增厚','胸膜斑']
+
         if key=='XQJY':
             for val in value:
-                if val in row_chest_one:
+                import pypinyin
+                fb_row_chest_one=[]
+                for name in row_chest_one:
+                    py_row_chest_one=pypinyin.slug(name)
+                    sx_row_chest_one=list(py_row_chest_one.split('-')[0])[0]+list(py_row_chest_one.split('-')[1])[0]
+                    fb_row_chest_one.append(sx_row_chest_one.upper())
+##                print fb_row_chest_one
+                if val in fb_row_chest_one:
                     sheet1.write(14,5,'有   ✔',style_other)
-##                    row_chest_one=['左侧','右侧','双侧','少量','中量','大量']
-                    index=row_chest_one.index(val)
-                    row_chest_one.pop(index)
-                    row_chest_one.insert(index,val+'    ✔')
+##                    print '111'
+
+                    index=fb_row_chest_one.index(val)
+                    pop=row_chest_one.pop(index)
+                    row_chest_one.insert(index,pop+u'    ✔')
                     print 'row_chest_one=',row_chest_one
                     i,j=0,14
                     while i<len(row_chest_one):
@@ -335,12 +349,18 @@ def ExcelXlwt(filename,**args):
                     sheet1.write(14,5,'无   ✔',style_other)
         elif key=='XMZH':
             for val in value:
-                if val in row_chest_two:
+                import pypinyin
+                fb_row_chest_two=[]
+                for name in row_chest_two:
+                    py_row_chest_two=pypinyin.slug(name)
+                    sx_row_chest_two=list(py_row_chest_two.split('-')[0])[0]+list(py_row_chest_two.split('-')[1])[0]
+                    fb_row_chest_two.append(sx_row_chest_two.upper())
+                if val in fb_row_chest_two:
                     sheet1.write(15,5,'有   ✔',style_other)
-
-                    index=row_chest_two.index(val)
-                    row_chest_two.pop(index)
-                    row_chest_two.insert(index,val+'    ✔')
+##                    print '222'
+                    index=fb_row_chest_two.index(val)
+                    pop=row_chest_two.pop(index)
+                    row_chest_two.insert(index,pop+u'    ✔')
                     i,j=0,15
                     while i<len(row_chest_two):
                         sheet1.write(j,i+6,row_chest_two[i],style_other)
@@ -348,7 +368,7 @@ def ExcelXlwt(filename,**args):
                 else:
                     sheet1.write(15,5,'无   ✔',style_other)
 
-    w.save('E:\github\suzhou\\'+filename)
+    w.save('E:\github\PythonStudy\\'+filename)
 
-chestDic={'XQJY':('DL','ZC'),'XMZH':('JX','YC','GH')}
+chestDic={'XQJY':['DL','ZC'],'XMZH':['GF','YC','GH']}
 ExcelXlwt('Beijing_Excel03.xls',arg1=chestDic)

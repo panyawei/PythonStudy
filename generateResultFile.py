@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #-------------------------------------------------------------------------------
-# Name:        module1
+# Name:        generateResultFile.py
 # Purpose:
 #
 # Author:      12SigmaTech
@@ -9,13 +9,13 @@
 # Copyright:   (c) 12SigmaTech 2017
 # Licence:     <your licence>
 #-------------------------------------------------------------------------------
-import xlwt
+import xlwt #exampleB
 from xlwt import *
 ##class xlwtExcel:
 def ExcelXlwt(filename,**args):
 
     w=Workbook(encoding='utf-8')
-    sheet1=w.add_sheet('first',cell_overwrite_ok = True)
+    sheet1=w.add_sheet(u'CT结果记录表',cell_overwrite_ok = True)
 ##    sheet1.wnd_visible=True
     borders=xlwt.Borders()
     borders.left=1
@@ -101,7 +101,8 @@ def ExcelXlwt(filename,**args):
     sheet1.write(13,6,'结节',style_other)
     sheet1.write_merge(13,13,7,8,'管壁增厚',style_other)
     sheet1.write(13,9,'腔狭窄',style_other)
-    sheet1.write_merge(13,13,10,11,'部位:',style_other)
+    sheet1.write(13,10,'部位:',style_other)
+    sheet1.write(13,11,'',style_other)
 
     #  胸腔/胸膜异常
     sheet1.write_merge(14,16,0,2,'胸腔/胸膜异常',style_top)
@@ -154,7 +155,7 @@ def ExcelXlwt(filename,**args):
     while i<len(row_bloodvessel_two):
         sheet1.write(j,i+6,row_bloodvessel_two[i],style_other)
         i+=1
-    sheet1.write(18,8,'其它:',style_other_other)
+    sheet1.write(18,8,'其它:',style_other)
     sheet1.write_merge(18,18,9,11,'',style_other_other)
     row_bloodvessel_three=['局限','弥漫','少量','中量','大量','']
     i,j=0,19
@@ -172,14 +173,14 @@ def ExcelXlwt(filename,**args):
     while i<len(row_bloodvessel_five):
         sheet1.write(j,i+6,row_bloodvessel_five[i],style_other)
         i+=1
-    sheet1.write(21,8,'其它:',style_other_other)
+    sheet1.write(21,8,'其它:',style_other)
     sheet1.write_merge(21,21,9,11,'',style_other_other)
     row_bloodvessel_six=['右PA','左PA']
     i,j=0,22
     while i<len(row_bloodvessel_six):
         sheet1.write(j,i+6,row_bloodvessel_six[i],style_other)
         i+=1
-    sheet1.write(22,8,'描述:',style_other_other)
+    sheet1.write(22,8,'描述:',style_other)
     sheet1.write_merge(22,22,9,11,'',style_other_other)
 
     # lymph gland
@@ -331,11 +332,9 @@ def ExcelXlwt(filename,**args):
     sheet1.write(42,9,'其它建议:',style_other)
     sheet1.write_merge(42,42,10,11,'',style_other_other)
     sheet1.write_merge(43,43,5,11,'',style_other_other)
-##    row_sz_two=['','','','','','','']
-##    i,j=0,43
-##    while i<len(row_sz_two):
-##        sheet1.write(j,i+5,row_sz_two[i],style_other)
-##        i+=1
+
+    sheet1.write_merge(44,45,0,2,'专家会诊意见及填表医生',style_top)
+    sheet1.write_merge(44,45,3,11,'',style_other)
 
     #  write into Excel
     dic=args
@@ -345,27 +344,32 @@ def ExcelXlwt(filename,**args):
         rowIndex1=table1Items.index(key)+5
         if key in table1Items:
             if len(value)!=0:
-
                 sheet1.write(rowIndex1,5,'有',style_other)
                 for val in value:
                     if(len(val)==2):
-                        if(rowIndex1==13):
-                              if (len(val)==2):
-                                    if val[1]==1:
-                                        sheet1.write(rowIndex1,6,u'结节 ✔',style_other)
-                                    elif val[1]==2:
-                                        sheet1.write_merge(rowIndex1,rowIndex1,7,8,u'管壁增厚 ✔',style_other)
-                                    else:
-                                        sheet1.write(rowIndex1,9,u'腔狭窄 ✔',style_other)
-                        elif val[1]==0:
-                            sheet1.write(rowIndex1,5,'有',style_other)
-                        else:
+                        if val[1]==0:
+                            sheet1.write(rowIndex1,val[1]+5,'有',style_other)
+                        if 5<=rowIndex1 <12 and val[1]>0:
                             sheet1.write(rowIndex1,val[1]+5,'✔',style_other)
+                        if(rowIndex1==12):
+                            sheet1.write(rowIndex1,5,val,style_other)
+                        if(rowIndex1==13):
+                            if (len(val)==2 and val[1]>0):
+                                if val[1]==1:
+                                    sheet1.write(rowIndex1,6,u'结节 ✔',style_other)
+                                elif val[1]==2:
+                                    sheet1.write_merge(rowIndex1,rowIndex1,7,8,u'管壁增厚 ✔',style_other)
+                                elif val[1]==3:
+                                    sheet1.write(rowIndex1,9,u'腔狭窄 ✔',style_other)
+                                else:
+                                    sheet1.write(rowIndex1,11,val,style_other)
+                        if val[1]==0 and rowIndex1==13:
+                            sheet1.write(table1Items.index(key)+5,5,'有',style_other)
                     else:
                         if(rowIndex1==12):
                             sheet1.write(rowIndex1,5,val,style_other)
                         if(rowIndex1==13):
-                            sheet1.write(rowIndex1,10,u'部位: '+val,style_other)
+                            sheet1.write(rowIndex1,11,val,style_other)
             else:
                 if (rowIndex1!=12):
                     sheet1.write(table1Items.index(key)+5,5,'无',style_other)
@@ -376,20 +380,31 @@ def ExcelXlwt(filename,**args):
             if len(value)!=0:
                 rowIndex2=table2Items.index(key)
                 for val in value:
-                    if val[1]>=1:
-                        sheet1.write(table2Items.index(key)+14,5,'有',style_other)
-                    else:
-                        sheet1.write(table2Items.index(key)+14,5,'无',style_other)
-
+                    if rowIndex2==0 or rowIndex2==1:
+                        if val[1]>=1:
+                            sheet1.write(table2Items.index(key)+14,5,'有',style_other)
+                        else:
+                            sheet1.write(table2Items.index(key)+14,5,'无',style_other)
                     if len(val)==2:
-                        if rowIndex2==0:
+                        if rowIndex2==0 and val[1]>1:
                             sheet1.write(14,val[1]+4,row_chest_one[val[1]-2]+u' ✔' ,style_other)
-                        elif rowIndex2==1:
+                        if rowIndex2==1 and val[1]>1:
                             sheet1.write(15,val[1]+4,row_chest_two[val[1]-2]+u' ✔' ,style_other)
-                    else:
-                        sheet1.write(16,8,val,style_other)
+                    if rowIndex2==2:
+                        if len(val)==2:
+                            if val[1]==1:
+                                sheet1.write(table2Items.index(key)+14,5,'有',style_other)
+                            elif val[1]==0:
+                                sheet1.write(table2Items.index(key)+14,5,'无',style_other)
+                            else:
+                                sheet1.write(16,8,val,style_other)
+                                sheet1.write(table2Items.index(key)+14,5,'有',style_other)
+                        else:
+                            sheet1.write(16,8,val,style_other)
+                            sheet1.write(table2Items.index(key)+14,5,'有',style_other)
             else:
                 sheet1.write(table2Items.index(key)+14,5,'无',style_other)
+
 
     table3Items=('GZDMGH','XBZH','XBJY','XYZD','ZDMBB','FDMYC')
     for key,value in dic['arg'][2].items():
@@ -397,22 +412,30 @@ def ExcelXlwt(filename,**args):
             if len(value)!=0:
                 rowIndex3=table3Items.index(key)
                 for val in value:
-                    if val[1]>=1:
-                        sheet1.write(table3Items.index(key)+17,5,'有',style_other)
-                    else:
-                        sheet1.write(table3Items.index(key)+17,5,'无',style_other)
+                    if isinstance(val,tuple):
+                        if val[1]>=1:
+                            sheet1.write(table3Items.index(key)+17,5,'有',style_other)
+                        else:
+                            sheet1.write(table3Items.index(key)+17,5,'无',style_other)
                     if len(val)==2:
-                        row_bloodvessel=row_bloodvessel_one,row_bloodvessel_two,row_bloodvessel_three,row_bloodvessel_four,row_bloodvessel_five,row_bloodvessel_six
-                        sheet1.write(rowIndex3+17,val[1]+4,row_bloodvessel[rowIndex3][val[1]-2]+' ✔',style_other)
+                        if val[1]>=2:
+                            if isinstance(val,tuple):
+                                row_bloodvessel=row_bloodvessel_one,row_bloodvessel_two,row_bloodvessel_three,row_bloodvessel_four,row_bloodvessel_five,row_bloodvessel_six
+                                sheet1.write(rowIndex3+17,val[1]+4,row_bloodvessel[rowIndex3][val[1]-2]+' ✔',style_other)
+                            if isinstance(val,unicode):
+                                if rowIndex3==1 or rowIndex3==4 or rowIndex3==5:
+                                    sheet1.write(rowIndex3+17,9,val,style_other)
+                                    sheet1.write(table3Items.index(key)+17,5,'有',style_other)
+                                if rowIndex3==3:
+                                    sheet1.write(rowIndex3+17,11,u'其它:'+val,style_other_other)
+                                    sheet1.write(table3Items.index(key)+17,5,'有',style_other)
                     else:
                         if rowIndex3==1 or rowIndex3==4 or rowIndex3==5:
                             sheet1.write(rowIndex3+17,9,val,style_other)
+                            sheet1.write(table3Items.index(key)+17,5,'有',style_other)
                         if rowIndex3==3:
                             sheet1.write(rowIndex3+17,11,u'其它:'+val,style_other_other)
-##                        if rowIndex3==4:
-##                            sheet1.write(rowIndex3+17,9,val,style_other)
-##                        if rowIndex3==5:
-##                            sheet1.write(rowIndex3+17,9,val,style_other)
+                            sheet1.write(table3Items.index(key)+17,5,'有',style_other)
             else:
                 sheet1.write(table3Items.index(key)+17,5,'无',style_other)
 
@@ -422,11 +445,15 @@ def ExcelXlwt(filename,**args):
             if (len(value)!=0):
                 rowIndex4=table4Items.index(key)+23
                 for val in value:
-                    if val[1]==1:
-                        sheet1.write(rowIndex4,5,'有',style_other)
-                    if val[1]==0:
-                        sheet1.write(rowIndex4,5,'无',style_other)
-                    if val[1]>1:
+                    if len(val)==2:
+                        if val[1]==1:
+                            sheet1.write(rowIndex4,5,'有',style_other)
+                        if val[1]==0:
+                            sheet1.write(rowIndex4,5,'无',style_other)
+                        if val[1]>1:
+                            sheet1.write(rowIndex4,5,'有',style_other)
+                            sheet1.write(rowIndex4,7,val,style_other)
+                    else:
                         sheet1.write(rowIndex4,5,'有',style_other)
                         sheet1.write(rowIndex4,7,val,style_other)
             else:
@@ -438,20 +465,58 @@ def ExcelXlwt(filename,**args):
             rowIndex5=table5Items.index(key)
             if len(value)!=0:
                 for val in value:
-                    if val[1]>=1:
-                        sheet1.write(table5Items.index(key)+26,5,'有',style_other)
-                    else:
-                        sheet1.write(table5Items.index(key)+26,5,'无',style_other)
+                    if isinstance(val,tuple):
+                        if val[1]>=1:
+                            sheet1.write(table5Items.index(key)+26,5,'有',style_other)
+                        if val[1]==0:
+                            sheet1.write(table5Items.index(key)+26,5,'无',style_other)
                     if len(val)==2:
+                        if key=='ZGZW':
+                            if isinstance(val,tuple):
+                                if val[1]==1:
+                                    sheet1.write(table5Items.index(key)+26,5,'有',style_other)
+                                if val[1]==0:
+                                    sheet1.write(table5Items.index(key)+26,5,'无',style_other)
+                            if isinstance(val,unicode):
+                                sheet1.write(26,5,'有',style_other)
+                                sheet1.write(rowIndex5+26,8,val,style_other)
+
                         if key=='SDBB':
-                            sheet1.write(rowIndex5+26,val[1]+4,row_zgbb_two[val[1]-2]+' ✔',style_other)
+                            if isinstance(val,tuple):
+                                if 4>=val[1]>=2:
+                                    sheet1.write(table5Items.index(key)+26,5,'有',style_other)
+                                    sheet1.write(rowIndex5+26,val[1]+4,row_zgbb_two[val[1]-2]+' ✔',style_other)
+                                if val[1]==0:
+                                    sheet1.write(table5Items.index(key)+26,5,'无',style_other)
+                            if isinstance(val,unicode):
+                                sheet1.write(rowIndex5+26,10,val,style_other)
+                                sheet1.write(27,5,'有',style_other)
                         if key=='JZXBB':
-                            sheet1.write(rowIndex5+26,val[1]+4,row_zgbb_three[val[1]-2]+' ✔',style_other)
+                            if isinstance(val,tuple):
+                                if 6>=val[1]>=2:
+                                    sheet1.write(table5Items.index(key)+26,5,'有',style_other)
+                                    sheet1.write(rowIndex5+26,val[1]+4,row_zgbb_three[val[1]-2]+' ✔',style_other)
+                                if val[1]==0:
+                                    sheet1.write(table5Items.index(key)+26,5,'无',style_other)
+                            if isinstance(val,unicode):
+                                sheet1.write(rowIndex5+26,11,u'其它:'+val,style_other_other)
+                                sheet1.write(table5Items.index(key)+26,5,'有',style_other)
+                        if key=='FJMS':
+                            if isinstance(val,unicode):
+                                sheet1.write(rowIndex5+26,5,val,style_other)
                     else:
-                        if rowIndex5==0:sheet1.write(rowIndex5+26,8,val,style_other)
-                        if rowIndex5==3:sheet1.write(rowIndex5+26,5,val,style_other)
-                        if rowIndex5==1:sheet1.write(rowIndex5+26,10,val,style_other)
-                        if rowIndex5==2:sheet1.write(rowIndex5+26,11,u'其它:'+val,style_other_other)
+                        if rowIndex5==0:
+                            sheet1.write(rowIndex5+26,8,val,style_other)
+                            sheet1.write(table5Items.index(key)+26,5,'有',style_other)
+                        if rowIndex5==3:
+                            sheet1.write(rowIndex5+26,5,val,style_other)
+                            sheet1.write(table5Items.index(key)+26,5,'有',style_other)
+                        if rowIndex5==1:
+                            sheet1.write(rowIndex5+26,10,val,style_other)
+                            sheet1.write(table5Items.index(key)+26,5,'有',style_other)
+                        if rowIndex5==2:
+                            sheet1.write(rowIndex5+26,11,u'其它:'+val,style_other_other)
+                            sheet1.write(table5Items.index(key)+26,5,'有',style_other)
             else:
                 if rowIndex5!=3:
                     sheet1.write(table5Items.index(key)+26,5,'无',style_other)
@@ -462,16 +527,31 @@ def ExcelXlwt(filename,**args):
             rowIndex6=table6Items.index(key)
             if len(value)!=0:
                 for val in value:
-                    if val[1]>=1:
-                        sheet1.write(table6Items.index(key)+30,5,'有',style_other)
-                    else:
-                        sheet1.write(table6Items.index(key)+30,5,'无',style_other)
+                    if rowIndex6==0 or rowIndex6==1:
+                        if isinstance(val,tuple):
+                            if val[1]>=1:
+                                sheet1.write(table6Items.index(key)+30,5,'有',style_other)
+                            else:
+                                sheet1.write(table6Items.index(key)+30,5,'无',style_other)
                     if len(val)==2:
                         if key=='XMRZZ' or key=='LGYC':
-                            sheet1.write(rowIndex6+30,val[1]+4,row_xbbb[val[1]-2]+' ✔',style_other)
+                            if isinstance(val,tuple):
+                                sheet1.write(rowIndex6+30,val[1]+4,row_xbbb[val[1]-2]+' ✔',style_other)
+                            if isinstance(val,unicode):
+                                if rowIndex6==0:
+                                    sheet1.write(rowIndex6+30,9,val,style_other)
+                                    sheet1.write(table6Items.index(key)+30,5,'有',style_other)
+                                if rowIndex6==1:
+                                    sheet1.write(rowIndex6+30,9,val,style_other)
+                                    sheet1.write(table6Items.index(key)+30,5,'有',style_other)
+                        if rowIndex6==2:sheet1.write(rowIndex6+30,5,val,style_other)
                     else:
-                        if rowIndex6==0:sheet1.write(rowIndex6+30,9,val,style_other)
-                        if rowIndex6==1:sheet1.write(rowIndex6+30,9,val,style_other)
+                        if rowIndex6==0:
+                            sheet1.write(rowIndex6+30,9,val,style_other)
+                            sheet1.write(table6Items.index(key)+30,5,'有',style_other)
+                        if rowIndex6==1:
+                            sheet1.write(rowIndex6+30,9,val,style_other)
+                            sheet1.write(table6Items.index(key)+30,5,'有',style_other)
                         if rowIndex6==2:sheet1.write(rowIndex6+30,5,val,style_other)
             else:
                 if rowIndex6!=2:
@@ -484,11 +564,12 @@ def ExcelXlwt(filename,**args):
             if len(value)!=0:
                 for val in value:
                     if len(val)==2:
-                        sheet1.write(rowIndex7+33,3,'增生退变 ✔',style_other)
+                        if isinstance(val,tuple):
+                            sheet1.write(rowIndex7+33,3,'增生退变 ✔',style_other)
+                        if isinstance(val,unicode):
+                            sheet1.write(rowIndex7+33,6,val,style_other)
                     else:
                         sheet1.write(rowIndex7+33,6,val,style_other)
-            else:
-                sheet1.write(table7Items.index(key)+33,5,'',style_other)
 
     table8Items=('RXBB',)
     for key,value in dic['arg'][7].items():
@@ -496,8 +577,11 @@ def ExcelXlwt(filename,**args):
             rowIndex8=table8Items.index(key)
             if len(value)!=0:
                 for val in value:
-                    if len(val)==2 and val[1]<5:
-                        sheet1.write(rowIndex8+34,val[1]+5,row_rxbb[val[1]]+'✔',style_other)
+                    if len(val)==2:
+                        if isinstance(val,tuple):
+                            sheet1.write(rowIndex8+34,val[1]+5,row_rxbb[val[1]]+'✔',style_other)
+                        if isinstance(val,unicode):
+                            sheet1.write(rowIndex8+34,11,val,style_other)
                     else:
                         sheet1.write(rowIndex8+34,11,val,style_other)
 
@@ -505,37 +589,57 @@ def ExcelXlwt(filename,**args):
     for key,value in dic['arg'][8].items():
         if key in table9Items:
             rowIndex9=table9Items.index(key)
-            print 'rowIndex9=,key=',rowIndex9,key
             if len(value)!=0:
                 for val in value:
-                    if val[1]>=1:
-                        sheet1.write(rowIndex9+35,5,'有',style_other)
-                        if rowIndex9==0 and val[1]==3:
-                            sheet1.write(rowIndex9+35,5,'无',style_other)
-                    else:
-                        sheet1.write(rowIndex9+35,5,'无',style_other)
-                    if len(val)==2:
-                        if key=='GZBB':
-                            if val[1]==3:
-                                sheet1.write(rowIndex9+35,6,'蘘肿:    无 ✔      有      单发     多发',style_other)
-                            if val[1]==4:
-                                sheet1.write(rowIndex9+35,6,'蘘肿:    无       有 ✔     单发     多发',style_other)
-                            if val[1]==5:
-                                sheet1.write(rowIndex9+35,6,'蘘肿:    无       有 ✔     单发 ✔    多发',style_other)
-                            if val[1]==6:
-                                sheet1.write(rowIndex9+35,6,'蘘肿:    无       有 ✔     单发     多发✔',style_other)
-                            if val[1]==7 or val[1]==8:
-                                sheet1.write(rowIndex9+35,val[1]+3,row_sfb_one[val[1]-7]+'✔',style_other)
+                    if isinstance(val,tuple):
+                        if val[1]>=1:
+                            sheet1.write(rowIndex9+35,5,'有',style_other)
+                            if rowIndex9==0 and val[1]==3:
+                                sheet1.write(rowIndex9+35,5,'无',style_other)
                         else:
-                            row_sfb=row_sfb_one,row_sfb_two,row_sfb_three,row_sfb_four,row_sfb_five
-##                            if key=='SSXBB' or key=='SZBB' or key=='YXBB' or key=='FQFM_HLBJ':
-                            sheet1.write(rowIndex9+35,val[1]+4,row_sfb[rowIndex9][val[1]-2]+'✔',style_other)
+                            sheet1.write(rowIndex9+35,5,'无',style_other)
+                    if len(val)==2:
+                        if isinstance(val,tuple):
+                            if key=='GZBB':
+                                if val[1]==3:
+                                    sheet1.write(rowIndex9+35,6,'蘘肿:    无 ✔      有      单发     多发',style_other)
+                                if val[1]==4:
+                                    sheet1.write(rowIndex9+35,6,'蘘肿:    无       有 ✔     单发     多发',style_other)
+                                if val[1]==5:
+                                    sheet1.write(rowIndex9+35,6,'蘘肿:    无       有 ✔     单发 ✔    多发',style_other)
+                                if val[1]==6:
+                                    sheet1.write(rowIndex9+35,6,'蘘肿:    无       有 ✔     单发     多发✔',style_other)
+                                if val[1]==7 or val[1]==8:
+                                    sheet1.write(rowIndex9+35,val[1]+3,row_sfb_one[val[1]-7]+'✔',style_other)
+                            elif val[1]>1:
+                                row_sfb=row_sfb_one,row_sfb_two,row_sfb_three,row_sfb_four,row_sfb_five
+                                sheet1.write(rowIndex9+35,val[1]+4,row_sfb[rowIndex9][val[1]-2]+'✔',style_other)
+                        if isinstance(val,unicode):
+                            if rowIndex9==1 :
+                                sheet1.write(rowIndex9+35,11,u'其它:'+val,style_other)
+                                sheet1.write(rowIndex9+35,5,'有',style_other)
+                            if rowIndex9==2 :
+                                sheet1.write(rowIndex9+35,11,u'其它:'+val,style_other)
+                                sheet1.write(rowIndex9+35,5,'有',style_other)
+                            if rowIndex9==3 :
+                                sheet1.write(rowIndex9+35,10,val,style_other)
+                                sheet1.write(rowIndex9+35,5,'有',style_other)
+                            if rowIndex9==4 :
+                                sheet1.write(rowIndex9+35,9,val,style_other)
+                                sheet1.write(rowIndex9+35,5,'有',style_other)
                     else:
-                        print 'ssssss'
-                        if rowIndex9==1 :sheet1.write(rowIndex9+35,11,u'其它:'+val,style_other)
-                        if rowIndex9==2 :sheet1.write(rowIndex9+35,11,u'其它:'+val,style_other)
-                        if rowIndex9==3 :sheet1.write(rowIndex9+35,10,u'描述:'+val,style_other)
-                        if rowIndex9==4 :sheet1.write(rowIndex9+35,9,u'其它:'+val,style_other)
+                        if rowIndex9==1 :
+                            sheet1.write(rowIndex9+35,11,u'其它:'+val,style_other)
+                            sheet1.write(rowIndex9+35,5,'有',style_other)
+                        if rowIndex9==2 :
+                            sheet1.write(rowIndex9+35,11,u'其它:'+val,style_other)
+                            sheet1.write(rowIndex9+35,5,'有',style_other)
+                        if rowIndex9==3 :
+                            sheet1.write(rowIndex9+35,10,val,style_other)
+                            sheet1.write(rowIndex9+35,5,'有',style_other)
+                        if rowIndex9==4 :
+                            sheet1.write(rowIndex9+35,9,val,style_other)
+                            sheet1.write(rowIndex9+35,5,'有',style_other)
             else:
                 sheet1.write(rowIndex9+35,5,'无',style_other)
 
@@ -552,20 +656,23 @@ def ExcelXlwt(filename,**args):
             if len(value)!=0:
                 for val in value:
                     if len(val)==2:
-                        if val[1]==0:
-                            sheet1.write(rowIndex11+41,val[1]+3,'未见异常 ✔',style_other)
-                        if val[1]==1:
-                            sheet1.write(rowIndex11+41,val[1]+4,'炎症 ✔',style_other)
-                        if val[1]==2:
-                            sheet1.write(rowIndex11+41,val[1]+4,'结核:无  有 ✔ 活动  非活动',style_other)
-                        if val[1]==3:
-                            sheet1.write(rowIndex11+41,val[1]+3,'结核:无  有 ✔ 活动 ✔  非活动',style_other)
-                        if val[1]==4:
-                            sheet1.write(rowIndex11+41,val[1]+2,'结核:无  有 ✔ 活动  非活动 ✔',style_other)
-                        if val[1]!=2 and val[1]!=3 and val[1]!=4:
-                            sheet1.write(rowIndex11+41,6,'结核:无✔ 有  活动  非活动',style_other)
-                        if val[1]==5:
-                            sheet1.write(rowIndex11+41,val[1]+4,'肿瘤 ✔',style_other)
+                        if isinstance(val,tuple):
+                            if val[1]==0:
+                                sheet1.write(rowIndex11+41,val[1]+3,'未见异常 ✔',style_other)
+                            if val[1]==1:
+                                sheet1.write(rowIndex11+41,val[1]+4,'炎症 ✔',style_other)
+                            if val[1]==2:
+                                sheet1.write(rowIndex11+41,val[1]+4,'结核:无  有 ✔ 活动  非活动',style_other)
+                            if val[1]==3:
+                                sheet1.write(rowIndex11+41,val[1]+3,'结核:无  有 ✔ 活动 ✔  非活动',style_other)
+                            if val[1]==4:
+                                sheet1.write(rowIndex11+41,val[1]+2,'结核:无  有 ✔ 活动  非活动 ✔',style_other)
+                            if val[1]!=2 and val[1]!=3 and val[1]!=4:
+                                sheet1.write(rowIndex11+41,6,'结核:无✔ 有  活动  非活动',style_other)
+                            if val[1]==5:
+                                sheet1.write(rowIndex11+41,val[1]+4,'肿瘤 ✔',style_other)
+                        if isinstance(val,unicode):
+                            sheet1.write(rowIndex11+41,11,val,style_other)
                     else:
                         sheet1.write(rowIndex11+41,11,val,style_other)
 
@@ -576,12 +683,22 @@ def ExcelXlwt(filename,**args):
             if len(value)!=0:
                 for val in value:
                     if len(val)==2 and key=='SZSJ':
-                        sheet1.write(rowIndex12+42,val[1]+5,row_sz_one[val[1]]+'✔',style_other)
+                        if isinstance(val,tuple):
+                            sheet1.write(rowIndex12+42,val[1]+5,row_sz_one[val[1]]+'✔',style_other)
+                        if isinstance(val,unicode):
+                            if rowIndex12==0:sheet1.write(rowIndex12+42,10,val,style_other)
                     else:
                         if rowIndex12==0:sheet1.write(rowIndex12+42,10,val,style_other)
                         if rowIndex12==1:sheet1.write(rowIndex12+42,5,val,style_other)
+
+    table13Items=('ZJHZYJ',)
+    for key,value in dic['arg'][12].items():
+        for val in value:
+            if key=='ZJHZYJ':
+                sheet1.write_merge(44,45,3,11,val,style_other)
+
     w.save(filename)
-####
+
 ##tableDic1= {'FQZ': [(6, 1),(6,0)], 'SYZ_XPJJ': [(1, 2)], 'FSZ_GGO': [(0, 1)], 'ZQGKZ': [(3, 4)], 'FBZ': [(5, 6)], 'FJMS': [u'\u58eb\u5927\u592b\u4f3c\u7684'], 'FJZXWH': [(4, 5)], 'QG_ZQG': [(7, 1), (7, 3), u'\u540a\u6b7b\u6276\u4f24'], 'XWBH_JG': [(2, 3)]}
 ##tableDic2= {'XMZH': [(1, 1), (1, 3), (1, 5), (1, 7)], 'XMB': [(2, 1), u'\u53d1\u5c04\u70b9\u53d1\u751f'], 'XQJY': [(0, 2), (0, 4), (0, 6)]}
 ##tableDic3= {'XBZH': [(1, 3), u'\u7684\u9644\u5c5e\u516c\u53f8\u7684'], 'GZDMGH': [(0, 2)], 'XBJY': [], 'ZDMBB': [u'\u7b2c\u4e09\u65b9\u5e7f\u544a\u5546\u5730\u65b9'], 'FDMYC': [(5, 2), u'\u7b2c\u4e09\u65b9\u516c\u53f8'], 'XYZD': [(3, 5), u'\u5341\u591a\u4e2a']}
@@ -594,5 +711,6 @@ def ExcelXlwt(filename,**args):
 ##tableDic10= {'QTBX': [u'\u662f\u6cd5\u5927\u5e08\u5085']}
 ##tableDic11= {'NIZHEN': [(0,0),(0, 1), (0, 5), u'\u5e45\u5ea6\u53d8\u5316\u5e45\u5ea6']}
 ##tableDic12= {'SZSJ': [(0, 1), (0, 3), u'\u5c81\u7684\u6cd5\u56fd'], 'SZBB': [u'\u6536\u8d39\u7684\u9ad8\u5bcc\u5e05\u7684\u6562\u6b7b\u961f\u98ce\u683c']}
-##tableDic=tableDic1,tableDic2,tableDic3,tableDic4,tableDic5,tableDic6,tableDic7,tableDic8,tableDic9,tableDic10,tableDic11,tableDic12
+##tableDic13= {'ZJHZYJ': [u'\u65e0\u75c5\u53d8\uff0c\u5065\u5eb7\u3002\n\t\t\t\t\t\t\t\t\t\t\t\t\t\u67d0\u67d0\u533b\u751f']}
+##tableDic=tableDic1,tableDic2,tableDic3,tableDic4,tableDic5,tableDic6,tableDic7,tableDic8,tableDic9,tableDic10,tableDic11,tableDic12,tableDic13
 ##ExcelXlwt('Beijing_Excel03.xls',arg=tableDic)
