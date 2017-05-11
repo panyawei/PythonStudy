@@ -1,4 +1,6 @@
 # -*- coding:utf-8 -*-
+# 在pyscript中可以顺利运行
+
 from urllib import urlencode
 from urllib2 import Request,urlopen,build_opener,HTTPCookieProcessor,install_opener
 import cookielib
