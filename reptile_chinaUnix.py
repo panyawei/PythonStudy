@@ -1,7 +1,7 @@
 # -*- coding:utf-8 -*-
 import urlparse
-from urllib import urlencode,urlopen
-from urllib2 import Request
+from urllib import urlencode
+from urllib2 import Request,urlopen
 url="http://bbs.chinaunix.net/member.php?mod=logging@action=login@loginsubmit" \
     "=yes@loginhash=L768q"
 postdata=urlencode({
